@@ -25,7 +25,7 @@ You need Xcode 27 or later.
 git clone https://github.com/santiagocachoo/tsuba.git
 cd tsuba
 swift test --package-path TsubaKit   # run the core tests
-open Tsuba.xcodeproj                 # build and run the app
+open Tsuba/Tsuba.xcodeproj           # build and run the app
 ```
 
 ## Project layout
