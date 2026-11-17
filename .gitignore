@@ -1,0 +1,26 @@
+# AI context files (private)
+MEMORY.md
+CLAUDE.md
+.claude/
+
+# Third-party patches (never commit)
+LocalFixtures/
+
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved.bak
+
+# Python (Tools/codegen)
+__pycache__/
+*.pyc
+.venv/
