@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tsubakit-linux:
+    name: TsubaKit (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.4.2-noble
+    steps:
+      - uses: actions/checkout@v5
+      - name: Lint
+        run: swift format lint --strict --recursive TsubaKit
+      - name: Test
+        run: swift test --package-path TsubaKit
+
+  app-macos:
+    name: App + TsubaKit (macOS)
+    # Preview image (macOS 27 + Xcode 27). Switch to a GA label once one ships.
+    runs-on: xcode-27
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v5
+      - name: Versions
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: Test TsubaKit
+        run: swift test --package-path TsubaKit
+      - name: Build and test app
+        run: |
+          xcodebuild test \
+            -project Tsuba/Tsuba.xcodeproj \
+            -scheme Tsuba \
+            -destination 'platform=macOS' \
+            -only-testing:TsubaTests \
+            CODE_SIGNING_ALLOWED=NO
